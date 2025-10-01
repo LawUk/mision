@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Formulario Súper Oficial</title>
+  <style>
+    /* Fondo Rosa más intenso */
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: #ffc1d6; /* Rosa menos claro */
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Contenedor del formulario */
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    h1 { 
+        font-size: 2.2em; 
+        margin-bottom: 20px; 
+        color: #ff4f70; 
+        text-align: left;
+    }
+    p { 
+        font-size: 1.05em; 
+        color: #333;
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255, 111, 145, 0.3);
+    }
+    
+    label { 
+        display:block; 
+        margin-bottom: 8px; 
+        text-align:left; 
+        font-weight:bold; 
+        color: #555;
+        font-size: 1.1em;
+    }
+    
+    input:not([type="checkbox"]), textarea, select {
+      width: 100%; 
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+      box-shadow: none;
+      transition: border-color 0.3s;
+      background: #fff; /* Fondo blanco en las cajas */
+    }
+
+    input:not([type="checkbox"]):focus, textarea:focus {
+        outline: none;
+        border: 1px solid #ff4f70; 
+    }
+    textarea { resize: vertical; }
+
+    button {
+      background:#ff4f70;
+      color:white;
+      cursor:pointer;
+      transition:0.3s;
+      margin-top:15px;
+      padding: 10px 20px; 
+      width: auto;
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+    }
+    button:hover { background:#ff2f55; }
+
+    .small { 
+        font-size:0.8em; 
+        color:#444; 
+        margin-top:20px; 
+        text-align: left;
+    }
+
+    .consent-label {
+        display: flex;
+        align-items: center;
+        font-weight: normal;
+        margin-top: 30px;
+        font-size: 1em;
+        color: #555;
+    }
+    .consent-label input[type="checkbox"] {
+        width: auto;
+        margin-right: 10px;
+        height: 18px;
+    }
+    .success-message {
+        text-align: center;
+        padding: 50px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ Formulario Súper Oficial ✨</h1>
+    <p>Hola Brendaly. Has desbloqueado una misión secreta: (nivel jefa final 👑)</p>
+    <p>Contesta las siguientes preguntas para reclamar tu premio</p>
+
+    <form id="superForm" method="POST">
+      <div class="form-group">
+        <label for="name">📝 Tu nombre (o alias de superheroína)</label>
+        <input id="name" name="name" placeholder="Ej: Agente Secreto Alfa" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="hobby">🎨 ¿Qué te gusta hacer en tus tiempos libres?</label>
+        <textarea id="hobby" name="hobby" placeholder=""></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="food">🍕 Comida favorita</label>
+        <input id="food" name="food" placeholder="" />
+      </div>
+
+      <div class="form-group">
+        <label for="music">Pelicula o serie favorita 🍿🎬 </label>
+        <input id="music" name="music" placeholder="" />
+      </div>
+
+      <div class="form-group">
+        <label for="trip">✈ Lugar que te gustaría visitar algún día</label>
+        <input id="trip" name="trip" placeholder="" />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">📱 Tu número de WhatsApp (nivel bonus)</label>
+        <input id="phone" name="phone" placeholder="" required />
+      </div>
+
+      <div class="form-group" style="border-bottom: none;">
+        <label class="consent-label">
+          <input type="checkbox" name="consent" required />
+          ✔ Acepto que este sujeto simpático me escriba cosas chidas (memes incluidos).
+        </label>
+
+        <input type="hidden" name="_subject" value="Nuevo contacto desde el Formulario Divertido" />
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+          <button type="submit">Enviar y desbloquear nivel secreto 🎮</button>
+          <p class="small" style="margin: 0; max-width: 60%;">Tus datos solo serán usados para memes, buenas pláticas y quizá una que otra sorpresa. 😶🤫</p>
+      </div>
+    </form>
+  </div>
+
+<script>
+    const form = document.getElementById('superForm');
+    const nameInput = document.getElementById('name');
+    const body = document.body;
+
+    const formspreeUrl = 'https://formspree.io/f/mvgwrpnj'; 
+    
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault(); 
+      
+      const enteredName = nameInput.value || 'Super Heroína'; 
+      
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return; 
+      }
+
+      const formData = new FormData(form);
+      
+      body.innerHTML = '<div class="success-message"><h1>Cargando nivel...</h1><p>Enviando datos de misión...</p></div>';
+
+      try {
+        const response = await fetch(formspreeUrl, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        if (response.ok) {
+          const successMessage = `
+            <div class="success-message">
+              <h1>✨ ¡Misión Cumplida! ✨</h1>
+              <p style="font-size: 1.2em; color: #333;">Felicidades, <strong style="color: #ff4f70;">${enteredName}</strong>, has completado la misión con éxito. </p>
+              <p style="font-size: 1.2em; color: #333;">Estaremos en contacto para la siguiente misión. ¡Buena suerte! 👑</p>
+              <p class="small" style="color: #888;">Tus datos ya fueron enviados. ¡Espera los memes!</p>
+            </div>
+          `;
+          body.innerHTML = successMessage;
+        } else {
+          body.innerHTML = '<h1>Error 💔</h1><p>Hubo un problema al enviar los datos. Revisa tu URL de Formspree.</p>';
+        }
+        
+      } catch (error) {
+        console.error('Error al enviar:', error);
+        body.innerHTML = '<h1>Error 🔌</h1><p>Error de conexión. Intenta de nuevo más tarde.</p>';
+      }
+    });
+</script>
+</body>
+</html>
